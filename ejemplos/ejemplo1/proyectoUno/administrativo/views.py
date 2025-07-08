@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -71,10 +71,8 @@ def obtener_estudiante(request, id):
     return render(request, 'obtener_estudiante.html', informacion_template)
 
 
-# @login_required(login_url='/entrando/login/')
-@login_required
-@permission_required('administrativo.add_estudiante', )
-# @permission_required('administrativo.add_estudiante', login_url="/entrando/login/")
+@login_required(login_url='/entrando/login/')
+@permission_required('administrativo.add_estudiante', login_url="/entrando/login/")
 def crear_estudiante(request):
     """
     """
@@ -90,9 +88,8 @@ def crear_estudiante(request):
 
     return render(request, 'crearEstudiante.html', diccionario)
 
-
+## esta Funcion se usa si se quiere especificar Manualmente la URL del login 
 @login_required(login_url='/entrando/login/')
-@permission_required('administrativo.change_estudiante',)
 def editar_estudiante(request, id):
     """
     """
@@ -117,14 +114,7 @@ def eliminar_estudiante(request, id):
     estudiante.delete()
     return redirect(index)
 
-# atención para permitir que una función sea usada por
-# un grupo específico
-def en_grupo(nombre):
-    def predicate(user):
-        return user.groups.filter(name=nombre).exists()
-    return user_passes_test(predicate)
 
-@en_grupo('supervisor')
 def crear_numero_telefonico(request):
     """
     """
@@ -173,11 +163,3 @@ def crear_numero_telefonico_estudiante(request, id):
     diccionario = {'formulario': formulario, 'estudiante': estudiante}
 
     return render(request, 'crearNumeroTelefonicoEstudiante.html', diccionario)
-
-"""
-Descripción en Admin	      codename
-Can add Estudiante	          add_estudiante
-Can change Estudiante	      change_estudiante
-Can delete Estudiante	      delete_estudiante
-Can view Estudiante	          view_estudiante
-"""
