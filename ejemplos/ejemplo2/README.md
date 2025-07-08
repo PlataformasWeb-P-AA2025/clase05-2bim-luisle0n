@@ -14,3 +14,9 @@ Algunas parte del proceso son referenciados del ejemplo explicado en:
 
 * https://kodnito.com/posts/django-authentication-github/
 
+![alt text](image-2.png)
+
+![alt text](image-1.png)
+
+
+![alt text](image.png)
